@@ -1,6 +1,7 @@
 /*****************
-
   Tally light ESP32 for Blackmagic ATEM switcher
+
+  Version 2.0
 
   A wireless (WiFi) tally light for Blackmagic Design
   ATEM video switchers, based on the M5StickC ESP32 development
@@ -16,31 +17,34 @@
 
 #include <M5StickC.h>
 #include <WiFi.h>
-#include <ATEM.h>
+#include <SkaarhojPgmspace.h>
+#include <ATEMbase.h>
+#include <ATEMstd.h>
 
-// Some RGB color values, see http://www.barth-dev.de/online/rgb565-color-picker/
-#define GRAY  0x0020 //   8   8   8
-#define GREEN 0x0200 //   0  64   0
-#define RED   0xF800 // 255   0   0
+IPAddress clientIp(192, 168, 178, 170);        	// IP address of the ESP32
+IPAddress switcherIp(192, 168, 178, 173);	      // IP address of the ATEM switcher
+ATEMstd AtemSwitcher;
+
+// http://www.barth-dev.de/online/rgb565-color-picker/
+#define GRAY  0x0020 //   8  8  8
+#define GREEN 0x0200 //   0 64  0
+#define RED   0xF800 // 255  0  0
 
 const char* ssid = "yournetwork";
 const char* password =  "yourpassword";
 
-int cameraNumber = 4;   // the camera this tally light is representing (1-4)
-int ledPin = 10;        // The pin of the red LED
+int cameraNumber = 4;
+int ledPin = 10;
 
 int PreviewTallyPrevious = 1;
 int ProgramTallyPrevious = 1;
-
-IPAddress ip(192, 168, 178, 170); // IP address of this ESP32
-
-ATEM AtemSwitcher(IPAddress(192, 168, 178, 173), 56417); // IP address of the switcher
 
 void setup() {
 
   Serial.begin(9600);
 
-  WiFi.begin(ssid, password); // Connect to WiFi
+  // Start the Ethernet, Serial (debugging) and UDP:
+  WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -48,46 +52,45 @@ void setup() {
   }
   Serial.println("Connected to the WiFi network");
 
-  M5.begin();   // initialize the M5StickC object
+  // initialize the M5StickC object
+  M5.begin();
 
-  pinMode(ledPin, OUTPUT);    // Set ledPin as digital output
-  digitalWrite(ledPin, HIGH); // Turn the ledPin off (high)
+  pinMode(ledPin, OUTPUT);  // LED: 1 is on Program (Tally)
+  digitalWrite(ledPin, HIGH); // off
 
+  // Initialize a connection to the switcher:
+  AtemSwitcher.begin(switcherIp);
   AtemSwitcher.serialOutput(0x80);
-  AtemSwitcher.connect();     // Connect to the ATEM switcher
+  AtemSwitcher.connect();
 }
 
 void loop() {
 
-  AtemSwitcher.runLoop();   // Check for and respond to packets, keep the connection alive
-
-  if (AtemSwitcher.isConnectionTimedOut())  {
-    Serial.println("Connection to ATEM Switcher has timed out - reconnecting!\n");
-    AtemSwitcher.connect();
-  }
+  // Check for packets, respond to them etc. Keeping the connection alive!
+  AtemSwitcher.runLoop();
 
   int ProgramTally = AtemSwitcher.getProgramTally(cameraNumber);
   int PreviewTally = AtemSwitcher.getPreviewTally(cameraNumber);
 
-  if ((ProgramTallyPrevious != ProgramTally) || (PreviewTallyPrevious != PreviewTally)) { // Has preview or program status changed?
+  if ((ProgramTallyPrevious != ProgramTally) || (PreviewTallyPrevious != PreviewTally)) { // changed?
 
-    if ((ProgramTally && !PreviewTally) || (ProgramTally && PreviewTally) ) { // This camera is only program or both preview and program?
+    if ((ProgramTally && !PreviewTally) || (ProgramTally && PreviewTally) ) { // only program, or program AND preview
       drawLabel(RED, BLACK, LOW);
-    } else if (PreviewTally && !ProgramTally) {                               // This camera is only preview, not program
+    } else if (PreviewTally && !ProgramTally) { // only preview
       drawLabel(GREEN, BLACK, HIGH);
-    } else if (!PreviewTally || !ProgramTally) {                              // This camera is not preview and not program
+    } else if (!PreviewTally || !ProgramTally) { // neither
       drawLabel(BLACK, GRAY, HIGH);
     }
 
   }
 
-  ProgramTallyPrevious = ProgramTally; // Store the last program status
-  PreviewTallyPrevious = PreviewTally; // Store the last preview status
+  ProgramTallyPrevious = ProgramTally;
+  PreviewTallyPrevious = PreviewTally;
 }
 
 void drawLabel(unsigned long int screenColor, unsigned long int labelColor, bool ledValue) {
-  digitalWrite(ledPin, ledValue);                     // Turn red LED on or off
-  M5.Lcd.fillScreen(screenColor);                     // Fill the LCD with a color
-  M5.Lcd.setTextColor(labelColor, screenColor);       // Set the text color
-  M5.Lcd.drawString(String(cameraNumber), 15, 40, 8); // Display camera number
+  digitalWrite(ledPin, ledValue);
+  M5.Lcd.fillScreen(screenColor);
+  M5.Lcd.setTextColor(labelColor, screenColor);
+  M5.Lcd.drawString(String(cameraNumber), 15, 40, 8);
 }
