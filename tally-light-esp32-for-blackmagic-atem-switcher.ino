@@ -16,6 +16,7 @@
 ******************/
 
 #include <M5StickC.h>
+#include <M5StickCPlus.h> //Support for the M5StickCPlus
 #include <WiFi.h>
 #include <SkaarhojPgmspace.h>
 #include <ATEMbase.h>
@@ -54,7 +55,8 @@ void setup() {
 
   // initialize the M5StickC object
   M5.begin();
-
+  setCpuFrequencyMhz(80); // These settings will double the battery life on the Plus stick
+  btStop(); // These settings will double the battery life on the Plus stick
   pinMode(ledPin, OUTPUT);  // LED: 1 is on Program (Tally)
   digitalWrite(ledPin, HIGH); // off
 
@@ -92,5 +94,6 @@ void drawLabel(unsigned long int screenColor, unsigned long int labelColor, bool
   digitalWrite(ledPin, ledValue);
   M5.Lcd.fillScreen(screenColor);
   M5.Lcd.setTextColor(labelColor, screenColor);
+  M5.Lcd.setTextSize(1);  // Changing this to "2" will make the camera number full screen on the Plus
   M5.Lcd.drawString(String(cameraNumber), 15, 40, 8);
 }
