@@ -33,7 +33,10 @@ ATEMstd AtemSwitcher;
 const char* ssid = "yournetwork";
 const char* password =  "yourpassword";
 
-int cameraNumber = 4;
+int inputNumber = 1; // The lowest/first camera input
+int lowCameraNumber = inputNumber;
+int highCameraNumber = 8; // The highest input with a cameras
+int cameraOffset = 0; // The number of inputs on your ATEM before the first camera. Eg. We label Input 3 as CAM1.
 int ledPin = 10;
 
 int PreviewTallyPrevious = 1;
@@ -54,7 +57,6 @@ void setup() {
 
   // initialize the M5StickC object
   M5.begin();
-
   pinMode(ledPin, OUTPUT);  // LED: 1 is on Program (Tally)
   digitalWrite(ledPin, HIGH); // off
 
@@ -65,21 +67,29 @@ void setup() {
 }
 
 void loop() {
-
+  M5.update();
+  if (M5.BtnA.wasPressed()){
+    inputNumber = inputNumber + 1;
+    if (inputNumber > highCameraNumber) {
+      inputNumber = lowCameraNumber;
+    }
+    drawLabel(BLACK, GRAY, HIGH, inputNumber);
+    delay(500);
+  }
   // Check for packets, respond to them etc. Keeping the connection alive!
   AtemSwitcher.runLoop();
 
-  int ProgramTally = AtemSwitcher.getProgramTally(cameraNumber);
-  int PreviewTally = AtemSwitcher.getPreviewTally(cameraNumber);
+  int ProgramTally = AtemSwitcher.getProgramTally(inputNumber);
+  int PreviewTally = AtemSwitcher.getPreviewTally(inputNumber);
 
   if ((ProgramTallyPrevious != ProgramTally) || (PreviewTallyPrevious != PreviewTally)) { // changed?
 
     if ((ProgramTally && !PreviewTally) || (ProgramTally && PreviewTally) ) { // only program, or program AND preview
-      drawLabel(RED, BLACK, LOW);
+      drawLabel(RED, BLACK, LOW, inputNumber);
     } else if (PreviewTally && !ProgramTally) { // only preview
-      drawLabel(GREEN, BLACK, HIGH);
+      drawLabel(GREEN, BLACK, HIGH, inputNumber);
     } else if (!PreviewTally || !ProgramTally) { // neither
-      drawLabel(BLACK, GRAY, HIGH);
+      drawLabel(BLACK, GRAY, HIGH, inputNumber);
     }
 
   }
@@ -88,9 +98,9 @@ void loop() {
   PreviewTallyPrevious = PreviewTally;
 }
 
-void drawLabel(unsigned long int screenColor, unsigned long int labelColor, bool ledValue) {
+void drawLabel(unsigned long int screenColor, unsigned long int labelColor, bool ledValue, int inputNumber) {
   digitalWrite(ledPin, ledValue);
   M5.Lcd.fillScreen(screenColor);
   M5.Lcd.setTextColor(labelColor, screenColor);
-  M5.Lcd.drawString(String(cameraNumber), 15, 40, 8);
+  M5.Lcd.drawString(String(cameraNumber - cameraOffset), 15, 40, 8);
 }
