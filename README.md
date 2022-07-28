@@ -13,8 +13,8 @@ Added some features
 
 # Tally in work
 <br>
-<video src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/tally-in-action.mp4" controls="controls" style="max-width: 500px;">
-</video>
+https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/tally-in-action.mp4
+
 <br><br><br>
 
 
