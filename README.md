@@ -23,6 +23,7 @@ Added some features
 How to configure tally
 - Go to second screen pushing M5 button<br>
 <img src="./media/infoScreem.jpeg" alt="infoScreem" width="200"/><br>
+![infoScreem](./media/infoScreem.jpeg =200x)
 - Enter the ip that was shown on the screen <br>
 <img src="./media/wifiManager-1.png" alt="wifiManager1" width="100"/>
 <img src="./media/wifiManager-2.png" alt="wifiManager2" width="100"/><br>
