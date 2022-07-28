@@ -13,7 +13,7 @@ Added some features
 
 # Tally in work
 <br>
-<video src="media/tally-in-action.MOV" controls="controls" style="max-width: 500px;">
+<video src="./media/tally-in-action.MOV" controls="controls" style="max-width: 500px;">
 </video>
 <br><br><br>
 
@@ -22,17 +22,17 @@ Added some features
 # Tally setup
 How to configure tally
 - Go to second screen pushing M5 button<br>
-<img src="media/infoScreem.jpeg" alt="infoScreem" width="200"/><br>
+<img src="./media/infoScreem.jpeg" alt="infoScreem" width="200"/><br>
 - Enter the ip that was shown on the screen <br>
-<img src="media/wifiManager-1.png" alt="wifiManager1" width="100"/>
-<img src="media/wifiManager-2.png" alt="wifiManager2" width="100"/><br>
+<img src="./media/wifiManager-1.png" alt="wifiManager1" width="100"/>
+<img src="./media/wifiManager-2.png" alt="wifiManager2" width="100"/><br>
 - put the values ​​you want and click save<br>
--<img src="media/showing.jpeg" alt="showing" width="200"/><br>
+-<img src="./media/showing.jpeg" alt="showing" width="200"/><br>
 <br>
 
 
 # Tally info screen and brightness
-<video src="media/info-screen-brightness.MOV" controls="controls" style="max-width: 200px;">
+<video src="./media/info-screen-brightness.MOV" controls="controls" style="max-width: 200px;">
 </video>
 <br><br><br>
 
