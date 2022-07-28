@@ -13,7 +13,7 @@ Added some features
 
 # Tally in work
 <br>
-<video src="./media/tally-in-action.MOV" controls="controls" style="max-width: 500px;">
+<video src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/tally-in-action.MOV" controls="controls" style="max-width: 500px;">
 </video>
 <br><br><br>
 
@@ -22,18 +22,17 @@ Added some features
 # Tally setup
 How to configure tally
 - Go to second screen pushing M5 button<br>
-<img src="./media/infoScreem.jpeg" alt="infoScreem" width="200"/><br>
-![infoScreem](./media/infoScreem.jpeg =200x)
+<img src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/infoScreem.jpeg" alt="infoScreem" width="200"/><br>
 - Enter the ip that was shown on the screen <br>
-<img src="./media/wifiManager-1.png" alt="wifiManager1" width="100"/>
-<img src="./media/wifiManager-2.png" alt="wifiManager2" width="100"/><br>
+<img src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/wifiManager-1.png" alt="wifiManager1" width="100"/>
+<img src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/wifiManager-2.png" alt="wifiManager2" width="100"/><br>
 - put the values ​​you want and click save<br>
--<img src="./media/showing.jpeg" alt="showing" width="200"/><br>
+-<img src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/showing.jpeg" alt="showing" width="200"/><br>
 <br>
 
 
 # Tally info screen and brightness
-<video src="./media/info-screen-brightness.MOV" controls="controls" style="max-width: 200px;">
+<video src="https://raw.githubusercontent.com/ruizivo/tally-light-esp32-for-blackmagic-atem-switcher/master/Media/info-screen-brightness.MOV" controls="controls" style="max-width: 200px;">
 </video>
 <br><br><br>
 
